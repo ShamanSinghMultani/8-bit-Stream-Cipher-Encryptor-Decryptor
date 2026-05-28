@@ -53,35 +53,6 @@ All 30 test vectors passed with `error_count = 0`.
 
 Verified in **ModelSim** — waveforms confirm correct clock-edge alignment, seed loading, encryption enable, and matching `data_out` vs `data_out_ref`.
 
-## Conceptual Waveform 
----
-Signal       | 0ns      | 20ns     | 40ns     | 60ns     | 80ns     | 100ns
-─────────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────
-clk          | _┐_┐_┐_┐ | _┐_┐_┐_┐ | _┐_┐_┐_┐ | _┐_┐_┐_┐ | _┐_┐_┐_┐ | _┐_┐_┐_┐
-             |          |          |          |          |          |
-rst_n        | ____      | ____┐─── | ──────── | ──────── | ──────── | ────────
-             |          |          |          |          |          |
-load_seed    | ____      | ____┐──┐ | _______  | ________ | ________ | ________
-             |          |          |          |          |          |
-encrypt_en   | ____      | ________ | ___┐─┐__ | __┐─┐___ | ___┐─┐__ | ________
-             |          |          |          |          |          |
-data_in      | XXXX      | XXXXXXXX | ═0x52═══ | ═0x65═══ | ═0x64═══ | XXXXXXXX
-             |          |          | ('R')    | ('e')    | ('d')    |
-prng         | 0xCD      | 0xCD     | 0xCD─┐   | 0x9A─┐   | 0x35─┐   | 0x6B────
-(keystream)  | (reset)   | (loaded) |      │   |      │   |      │   |
-             |          |          |      ↓XOR |      ↓XOR|      ↓XOR|
-data_out     | XXXX      | XXXXXXXX | XXXXXXXX | ═0xC8═══ | ═0xFF═══ | ═0x59═══
-             |          |          | (1 clk   | (R⊕CD)   | (e⊕9A)   | (d⊕35)
-             |          |          |  delay)  |          |          |
-─────────────┴──────────┴──────────┴──────────┴──────────┴──────────┴──────────
-
-Notes:
-  X  = don't care / undefined
-  ═  = stable bus value
-  ⊕  = XOR operation (encrypt/decrypt)
-  data_out appears 1 clock cycle after encrypt_en due to registered pipeline stage
-  Same seed + same ciphertext → decrypted output = original plaintext (XOR is symmetric)
-
 ## Tools Used
 
 - **Quartus Prime Lite** — RTL synthesis
