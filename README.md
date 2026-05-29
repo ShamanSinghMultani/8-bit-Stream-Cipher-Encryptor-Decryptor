@@ -1,3 +1,4 @@
+<img width="1600" height="900" alt="waveform__prng" src="https://github.com/user-attachments/assets/1c76a708-ec85-4f76-9898-e3cadfa6a3fc" />
 # 🔐 8-bit Stream Cipher Encryptor/Decryptor
 
 A lightweight hardware encryption/decryption system implemented in Verilog HDL, designed and verified using **Quartus Prime Lite** and **ModelSim**.
